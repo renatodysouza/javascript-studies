@@ -5,22 +5,41 @@
   "main": "main.js",
   "scripts": {
     "lint": "./node_modules/.bin/eslint src/*js",
-    "deploy": "./node_modules/.bin/webpack --colors --progress --watch",
-    "prepush": "npm run lint",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "deploy": "./node_modules/.bin/webpack --colors --progress --watch --devtool source-map",
+    "prepush": "npm run lint && npm run covered",
+    "server": "./node_modules/.bin/webpack-dev-server --inline --open",
+    "test": "./node_modules/.bin/mocha  src/tests/**/*.spec.js --require babel-register --watch",
+    "report": "npm run test -- --reporter=nyan",
+    "covered" : "nyc ./node_modules/.bin/mocha  src/tests/**/*.spec.js --require babel-register"
+  },
+  "nyc" : {
+     "reporter": ["text", "html"],
+     "exclude" : ["tests/**"],
+     "check-coverage": true,
+     "lines": 80
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {},
-  "devDependencies": {
+  "dependencies": {
     "@babel/core": "^7.9.0",
+    "@babel/register": "^7.9.0",
+    "html-webpack-plugin": "^4.2.0"
+  },
+  "devDependencies": {
     "@babel/preset-env": "^7.9.5",
-    "babel-core": "^6.26.3",
     "babel-loader": "^8.1.0",
+    "babel-plugin-add-module-exports": "^1.0.2",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.26.2",
+    "babel-preset-env": "^1.7.0",
     "babel-preset-es2015-native-modules": "^6.9.4",
+    "babel-register": "^6.26.0",
+    "chai": "^4.2.0",
     "eslint": "^6.8.0",
     "husk": "^0.5.3",
+    "mocha": "^7.1.2",
+    "nyc": "^15.0.1",
     "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
   }
 }
